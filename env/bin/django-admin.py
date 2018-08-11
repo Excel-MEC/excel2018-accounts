@@ -1,4 +1,4 @@
-#!/home/vivek/git_projects/excel2018-accounts/env/bin/python2
+#!/home/vivek/git_projects/excel2018-accounts/env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":
