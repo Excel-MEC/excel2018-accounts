@@ -102,3 +102,6 @@ ENV/
 
 # Virtualenv files
 server/*
+
+# vscode files
+.vscode/
