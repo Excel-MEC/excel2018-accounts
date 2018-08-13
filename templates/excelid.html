@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<title>Excel Registration | Sucess</title>
+<head>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<title>Excel 2017 |Success</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static "register/css/main.css" %}">
+	<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<script type="text/javascript">
+			function navhomeoffline(){
+					window.location = "/offlinereg/"
+			}
+			function navhomepaid(){
+					window.location = "/paidreg/"
+			}
+			function navhomestudent(){
+					window.location = "/studentreg/"
+			}
+	</script>
+
+</head>
+<body style="overflow-x:hidden; ">
+	{% load static %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4" style="text-align: center;">
+				<h1 style="margin-top:100px;">Excel ID for the user is</h3>
+				<h3>EX{{ excelid }}</h3>
+			</div>
+			<div class="text-center col-sm-12">
+				<div class="col-sm-4 col-sm-offset-4" style="margin-top:200px;">
+					{% if flag == 0 %}
+						<button class="button" onclick="navhomeoffline()">Register next user</button>
+					{% elif flag == 1 %}
+						<button class="button" onclick="navhomepaid()">Register next user</button>
+					{% else %}
+						<button class="button" onclick="navhomestudent()">Register next user</button>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
