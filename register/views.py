@@ -81,3 +81,38 @@ class PaidReg(TemplateView):
             }
             return render(request,"excelid.html",context)
         return render(request,"paidreg.html",context)
+
+class OfflineReg(TemplateView):
+	def get(self,request,*args,**kwargs):
+		form=RegistrationForm()
+		context={
+		"title":"testing",
+		"form":form
+		}
+		return render(request,"offlinereg.html",context)
+
+	def post(self,request,*args,**kwargs):
+		form=RegistrationForm(request.POST)
+		context={
+		"title":"testing",
+		"form":form
+		}
+
+		if form.is_valid():
+			mail=form.cleaned_data.get('email')
+			name=form.cleaned_data.get('name')
+			phone=form.cleaned_data.get('phone')
+			college=form.cleaned_data.get('college')
+			stay=form.cleaned_data.get('stay')
+			code=uniqueid('6')
+			u=userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,stay=stay,present=True)
+			u.save()
+			#flag for offlinereg or paidreg
+			flag=0
+
+			context = {
+				"excelid":code,
+				"flag" : flag 
+			}
+			return render(request,"excelid.html",context)
+		return render(request,"offlinereg.html",context)
