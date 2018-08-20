@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from register.forms import RegistrationForm, PaidRegistrationForm
+from register.forms import RegistrationForm, PaidRegistrationForm, StudentForm
 import string
 
 def genexid(size=4, nums=string.digits):
@@ -116,3 +116,35 @@ class OfflineReg(TemplateView):
 			}
 			return render(request,"excelid.html",context)
 		return render(request,"offlinereg.html",context)
+
+class SchoolReg(TemplateView):
+	def get(self,request,*args,**kwargs):
+		form=StudentForm()
+		context={
+		"title":"testing",
+		"form":form
+		}
+		return render(request,"studentreg.html",context)
+
+	def post(self,request,*args,**kwargs):
+		form=StudentForm(request.POST)
+		context={
+		"title":"testing",
+		"form":form
+		}
+
+		if form.is_valid():
+			name=form.cleaned_data.get('Name')
+			college=form.cleaned_data.get('College')
+			code=uniqueid('9')
+			u=userinfo(excelid=code,name=name,college=college,stay=False,present=True)
+			u.save()
+			#flag for offlinereg or paidreg
+			flag=2
+
+			context = {
+				"excelid":code,
+				"flag" : flag 
+			}
+			return render(request,"excelid.html",context)
+		return render(request,"studentreg.html",context)
