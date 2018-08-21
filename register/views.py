@@ -2,6 +2,12 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from register.forms import RegistrationForm, PaidRegistrationForm, StudentForm
 import string
+from django.http import JsonResponse
+from register.models import userinfo,winners,paid_userinfo,paid_winners
+import pyqrcode
+import sys
+from django.http import HttpResponseRedirect
+import random
 
 def genexid(size=4, nums=string.digits):
 	exid=''
