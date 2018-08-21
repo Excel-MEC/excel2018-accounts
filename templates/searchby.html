@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<title>Excel 2017 | Searchby</title>
+<head>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="{% static "controlroom/css/main.css" %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript">
+		function replace(demo){
+			var str = document.getElementById(demo).innerHTML; 
+  			var res = str.replace(/,/g, "<br/>");
+  			document.getElementById(demo).innerHTML = res;
+		} 
+
+		function jsfunction(){
+			var c=document.getElementById("selctd").value;
+			document.getElementById("text").value="";
+			document.getElementById("text").placeholder="Enter the value";
+			document.getElementById("res").innerHTML = "";
+		}
+		window.onload = function() {
+			var c=document.getElementById("selctd").value;
+			//aja(c);
+		};
+
+		function update(x){
+			$.ajax({
+						type:"POST",
+						url: "/searchby/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"id": x
+						},
+						dataType: 'json',
+						success: function(data){
+						}
+			});
+		}
+	</script>
+</head>
+<body style="overflow-x:hidden; " >
+	<nav class="navbar navbar-default navbar-fixed-top" role="header">
+		<div class="container1 container-fluid">
+			<div class="navbar-header logos_section col-sm-12" >
+				<div class="col-sm-6">
+					<img src="{% static "register/images/excel2017.png" %}"/>
+				</div>
+			</div>
+			{% if error1 %}
+			<div class="text-danger text-center col-sm-6" role="alert">
+				<strong>Input needed</strong>
+			</div>
+			{% endif %}
+			{% if error2 %}
+			<div class="text-danger text-center col-sm-6 col-sm-offset-6" role="alert">
+				<strong>value field needed</strong>
+			</div>
+			{% endif %}
+			<form method="POST" action="." id="main">{%csrf_token%}
+				<div class="col-sm-12">
+					<div class="col-sm-6" style="margin-bottom:20px;">
+						<select class="sel form-control" name="searchby" text="" selected="selected" style="width:100%;height: 46px;" placeholder="Search for" onchange="jsfunction()" id="selctd">
+							<option selected="{{ searchby }}" value="{{ searchby }}">{{ searchby }}</option>
+							<option value="phone">phone</option>
+							<option value="name">name</option>
+							<option value="excelid">excelid</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group" style="margin-bottom:20px;">
+							<input id="text" type="text" class="form-control input-lg" value="{{value}}"  name="value" placeholder="Enter the value" list="browsers"/>
+							<datalist id="browsers">
+							</datalist>
+							<span class="input-group-btn">
+								<button class="btn btn-info btn-lg" style="background-color:#d55d74; border-color:#d55d74;" type="submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</nav>
+	<div class="item_container" id="res">
+		{% if len == 0 and error1 == False and error2 == False %}
+		<div class="text-danger text-center col-sm-6 item" role="alert">
+			<strong>No such value for this field!</strong>
+		</div>
+
+		{% elif error2 %}
+
+
+		{% elif searchby_num == 0 %}
+		<table class="table" id="tab1">
+				<thead>
+					<tr class="info">
+						<th>Excel ID</th>
+						<th>Name</th>
+						<th>College</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Mark as present</th>
+					</tr>
+				</thead>
+				{% for object in obj  %}	
+				<tbody>
+					<tr>
+						<td><b>EX{{ object.excelid }}</b></td>
+						<td>{{ object.name }}</td>
+						<td>{{ object.college }}</td>
+						<td>{{ object.email }}</td>
+						<td>{{ object.phone }}</td>
+						{% if object.present %}
+ 		 				<td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='update("{{ object.excelid }}")' checked/> mark </td>
+ 		 				{% else %}
+ 		 				<td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='update("{{ object.excelid }}")'/> mark </td>
+ 		 				{% endif %}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	</div>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<title>Excel 2017 | Certificate</title>
+<head>
+<style type="text/css">
+		div.tab {
+	    overflow: hidden;
+	    border: 1px solid #ccc;
+	    background-color: #f1f1f1;
+	}
+
+/* Style the buttons inside the tab */
+	div.tab button {
+	    background-color: inherit;
+	    float: left;
+	    border: none;
+	    outline: none;
+	    cursor: pointer;
+	    padding: 14px 16px;
+	    transition: 0.3s;
+	}
+
+/* Change background color of buttons on hover */
+	div.tab button:hover {
+	    background-color: #ddd;
+	}
+
+/* Create an active/current tablink class */
+	div.tab button.active {
+	    background-color: #ccc;
+	}
+
+/* Style the tab content */
+	.tabcontent {
+	    display: none;
+	  	padding: 6px 12px;
+   		border: 1px solid #ccc;
+	    border-top: none;
+	}
+	
+
+</style>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="{% static "controlroom/css/main.css" %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script>
+		//document.getElementById("defaultOpen").click();
+		window.onload = function() {
+
+				openTab(event, 'Winners');
+		};
+
+		function openTab(evt, cert_type) {
+    		// Declare all variables
+    		var i, tabcontent, tablinks;
+    		// Get all elements with class="tabcontent" and hide them
+    		tabcontent = document.getElementsByClassName("tabcontent");
+    		for (i = 0; i < tabcontent.length; i++) {
+    	    	tabcontent[i].style.display = "none";
+    		}
+
+    		// Get all elements with class="tablinks" and remove the class "active"
+    		tablinks = document.getElementsByClassName("tablinks");
+    		for (i = 0; i < tablinks.length; i++) {
+    		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+   			}
+
+    		// Show the current tab, and add an "active" class to the button that opened the tab
+    		document.getElementById(cert_type).style.display = "block";
+    		evt.currentTarget.className += " active";
+		}
+
+		function navhome(){
+			window.location = "/controlroom/"
+		}
+		function navsame(){
+			window.location = "/certificate/"
+		}
+
+		function update(x,y){
+			$.ajax({
+						type:"POST",
+						url: "/certificate/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"certificate": x+","+y
+						},
+						dataType: 'json',
+						success: function(data){
+							navsame();
+						}
+			});
+		}
+
+		function update1(x){
+			$.ajax({
+						type:"POST",
+						url: "/certificate/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"certificate1": x
+						},
+						dataType: 'json',
+						success: function(data){
+							navsame();
+						}
+			});
+		}
+
+		function updatepaidshort(x){
+			$.ajax({
+						type:"POST",
+						url: "/certificate/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"paid_short": x
+						},
+						dataType: 'json',
+						success: function(data){
+							navsame();
+						}
+			});
+		}
+
+		function updatepaidwinners(x,y){
+			$.ajax({
+						type:"POST",
+						url: "/certificate/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"paid_win": x+","+y
+						},
+						dataType: 'json',
+						success: function(data){
+							navsame();
+						}
+			});
+		}
+
+	</script>
+</head>
+<body style="overflow-x:hidden; ">
+	<nav class="navbar navbar-default navbar-fixed-top" role="header">
+		<div class="container1 container-fluid">
+			<div class="navbar-header logos_section col-sm-12" >
+				<div class="col-sm-6">
+					<img onclick="navhome()" src="{% static "register/images/excel2017.png" %}"/>
+				</div>
+			</div>
+			{% if error1 %}
+			<div class="text-danger text-center col-sm-6" role="alert">
+				<strong>no input or invalid excelid</strong>
+			</div>
+			{% endif %}
+			<form method="POST" action="." id="main">{%csrf_token%}
+				<div class="col-sm-12" >
+					<div class="col-sm-6">
+						<div class="input-group" style="margin-bottom:20px;">
+							<input id="text" type="text" class="form-control input-lg" value="{{value}}"  name="value" placeholder="Enter excelid " list="browsers"/>
+							<span class="input-group-btn">
+								<button class="btn btn-info btn-lg" style="background-color:#d55d74; border-color:#d55d74;" type="submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</nav>
+		<div class="item_container" id="res">
+		{% if sb == 1 %}	
+			<table width=100% style="margin:20px;">
+				<thead>
+					<tr class="info">
+						<th>Excel ID</th>
+						<th>Name</th>
+						<th>College</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Participated Events</th>
+					</tr>
+				</thead>
+				{% for object in obj  %}	
+				<tbody>
+					<tr>
+						<td>EX{{ object.excelid }}</td>
+						<td>{{ object.name }}</td>
+						<td>{{ object.college }}</td>
+						<td>{{ object.email }}</td>
+						<td>{{ object.phone }}</td>
+						<td>{{ object.participated_events }}</td>	
+					</tr>
+				</tbody>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		<div class="item_certi" id="res">
+		 <div margin-top = "2px"> 
+			<div class="tab">
+	  			<button class="tablinks" onclick="openTab(event, 'Winners')" id="defaultOpen"><h4>Winners</h4></button>
+	  			<button class="tablinks" onclick="openTab(event, 'Participants(Non-Mec)')"><h4>Participants(Non-Mec)</h4></button>
+				<button class="tablinks" onclick="openTab(event, 'Winners(Paid-events)')"><h4>Winners(Paid-events)</h4></button>
+				<button class="tablinks" onclick="openTab(event, 'Participants(Paid-events)')"><h4>Participants(Paid-events)</h4></button>
+			</div>
+			<div id="Winners" class="tabcontent">
+ 		 
+ 			<table width=100% >
+ 			 <tr style="font-weight:bold">
+ 		 		<td>EXCEL ID&emsp;</td><td>NAME&emsp;</td><td>EVENT &emsp;</td><td>POSITION&emsp;</td> <td>COLLEGE</td> 
+ 			 	</tr>
+ 			 {% for item in win_obj %}
+ 			 	<tr >
+ 				 	<td style="cursor: pointer;cursor: hand;">{{item.excelid}}&emsp;</td><td>{{item.name}}&emsp;</td><td>{{item.event}}&emsp;</td><td>{{item.position}}&emsp;</td> <td>{{item.college}}</td>
+ 			 	{% if item.printed %}
+ 			 		<td><input type="checkbox" name="myTextEditBox" value="checked" onclick='update("{{ item.excelid }}","{{item.event}}")' checked/> mark </td>
+ 			 	{% else %}
+ 		 		<td><input type="checkbox" name="myTextEditBox" value="checked" onclick='update("{{ item.excelid }}","{{item.event}}")'/> mark </td>
+ 			 	{% endif %}
+ 			 	</tr>
+ 			 {% endfor %}
+ 			</table>
+			</div>
+
+			<div id="Participants(Non-Mec)" class="tabcontent">
+			 <table width=100% >
+			 <tr style="font-weight:bold" >
+				 <td>EXCEL ID&emsp;</td><td>NAME&emsp;</td><td>COLLEGE&emsp;</td><td>CONTACT&emsp;</td> <td>PARTICPATED IN</td>
+ 			 </tr>
+ 			 {% for item in usr %}
+ 			 	<tr>
+ 			 	<td  style="cursor: pointer;cursor: hand;">{{item.excelid}}&emsp;</td><td>{{item.name}}&emsp;</td><td>{{item.college}}&emsp;</td><td>{{item.phone}}&emsp;</td>
+ 			 	<td>{% if item.participated_events == "nil" or item.participated_events == "" %}
+ 			 			Nil
+ 					{% else %}
+ 						{{item.participated_events}}
+ 					{% endif %}
+ 			 	</td>
+ 			 	{% if item.printed %}
+ 			 		<td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='update1("{{ item.excelid }}")' checked/> mark </td>
+ 			 	{% else %}
+ 			 		<td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='update1("{{ item.excelid }}")'/> mark </td>
+ 			 	{% endif %}
+ 			 	</tr>
+ 			 {% endfor %}
+ 			 </table>  
+			</div>
+
+			<div id="Winners(Paid-events)" class="tabcontent">
+			
+ 			 <table width=100% >
+ 			 <tr style="font-weight:bold">
+ 			 	<td>EXCEL ID&emsp;</td><td>NAME&emsp;</td><td>EVENT &emsp;</td><td>POSITION&emsp;</td> <td>COLLEGE</td> 
+ 			 	</tr>
+ 			 {% for item in paid_win_obj %}
+ 			 	<tr>
+ 			 	<td style="cursor: pointer;cursor: hand;">{{item.excelid}}&emsp;</td><td>{{item.name}}&emsp;</td><td>{{item.event}}&emsp;</td><td>{{item.position}}&emsp;</td> <td>{{item.college}}</td>
+ 			 	{% if item.printed %}
+ 			 		<td><input type="checkbox" name="myTextEditBox" value="checked" onclick='updatepaidwinners("{{ item.excelid }}","{{item.event}}")' checked/> mark </td>
+ 			 	{% else %}
+ 		 		<td><input type="checkbox" name="myTextEditBox" value="checked" onclick='updatepaidwinners("{{ item.excelid }}","{{item.event}}")'/> mark </td>
+ 			 	{% endif %}
+ 			 	</tr>
+ 			 {% endfor %}
+ 			 </table>
+			</div>
+
+			<div id="Participants(Paid-events)" class="tabcontent">
+				<table width=100% >
+				<tr style="font-weight:bold" >
+					<td>EXCEL ID&emsp;</td><td>NAME&emsp;</td><td>EVENT &emsp;</td><td>COLLEGE&emsp;</td><td>CONTACT&emsp;</td> <td>EMAIL</td>
+				 </tr>
+				 {% for item in paid_usr %}
+					 <tr>
+					 <td  style="cursor: pointer;cursor: hand;">{{item.excelid}}&emsp;</td><td>{{item.name}}&emsp;</td><td>{{item.event}}&emsp;</td><td>{{item.college}}&emsp;</td><td>{{item.phone}}&emsp;</td><td>{{item.email}}</td>
+					 {% if item.printed %}
+						 <td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='updatepaidshort("{{ item.excelid }}")' checked/> mark </td>
+					 {% else %}
+						 <td><input type="checkbox" name="myTextEditBox1" value="checked1" onclick='updatepaidshort("{{ item.excelid }}")'/> mark </td>
+					 {% endif %}
+					 </tr>
+				{% endfor %}
+				</table>  
+			</div>	
+
+		</div> 
+	</div>
+</body>
+</html>

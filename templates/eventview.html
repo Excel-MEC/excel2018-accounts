@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<title>Excel 2017 | Eventpage</title>
+<head>
+	 {% load staticfiles %}
+		<meta charset="utf-8">
+		<title>Excel 2017 |Controlroom</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static "controlroom/css/venue.css" %}">
+		<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+		<script type="text/javascript">
+			function navhome(){
+			window.location = "/controlroom/"
+		}	
+		
+		</script>
+		<style>
+      	table, th, td {
+      		border: 1px solid black;
+      		text-align: center;
+      	}
+      	th, tr{
+      		height:50px;
+      	}
+		.item_event{
+  			margin-top: 121px;
+		}
+</style>
+</head>
+<body>
+	<div class="logos_section">
+		<img onclick="navhome()" src="{% static "register/images/excel2017.png" %}"/>
+	</div>	
+	<div class="container" style="text-align: center;margin: auto;padding: auto;padding-top:10px;">
+		<div class="row">
+			<div class="text-center col-sm-12">
+				<h1 class="k">{{ evname }}</h1>
+			</div>
+			<div class="col-md-6">
+				<h1>Event managers and contact</h1>
+					{% for obj1, obj2 in eventman %}
+					<p style="font-size:20px;">{{obj1}} : {{ obj2 }}</p>
+					{% endfor %}
+			</div>
+			<div class="col-md-6">
+				<h1>Time</h1>
+					<p style="font-size:20px;">{{ obj.time }}</p>
+				<h1>Venue</h1>
+					<p style="font-size:20px;">{{ obj.venue_id }}</p>
+			</div>
+			<div class="col-sm-12">
+			<div class="col-md-4" style="margin-top:100px;">
+				<h1 style="font-size:25px;">Participated</h1>
+					<p>
+					{% for obj in participants %}
+					{% if obj == "nil" or obj == "" %}
+						Nil
+					{% else %}
+						EX{{obj}} ,
+					{% endif %}
+					{% endfor %}
+					</p>
+			</div>
+			<div class="col-md-4" style="margin-top:100px;">
+				<h1 style="font-size:25px;">Shortlisted participants</h1>
+					<p>{% for obj in shortlist %}
+						{% if obj == "nil" or obj == "" %}
+							Nil
+						{% else %}
+							EX{{obj}} ,
+						{% endif %}
+						{% endfor %}
+					</p>
+			</div>
+			<div class="col-md-4" style="margin-top:100px;">
+				<h1 style="font-size:25px;">Winners</h1>
+					<p>1.{{ obj.winner1 }}</p>
+					<p>2.{{ obj.winner2 }}</p>
+					<p>3.{{ obj.winner3 }}</p>
+			</div>
+			</div>
+		</div>
+	<div class="col-sm-12">
+	<div class="col-sm-4" style="margin-top:50px;">
+		<a href="/eventpage/{{ id }}/create/"><button class="button">Update</button></a> 
+	</div>
+	<div class="col-sm-4" style="margin-top:50px;">
+		<a href="/eventpage/{{ id }}/download/"><button class="button">Download shortlist</button></a> 
+	</div>
+	<div class="col-sm-4" style="margin-top:50px;">
+		<a href="/eventpage/{{ id }}/winnerdownload/"><button class="button">Download winners</button></a> 
+	</div>
+	</div>
+</div>
+</body>
+</html>

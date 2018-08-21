@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<title>Excel 2017 | Evaluation</title>
+<head>
+<style type="text/css">
+		div.tab {
+	    overflow: hidden;
+	    border: 1px solid #ccc;
+	    background-color: #f1f1f1;
+	}
+
+/* Style the buttons inside the tab */
+	div.tab button {
+	    background-color: inherit;
+	    float: left;
+	    border: none;
+	    outline: none;
+	    cursor: pointer;
+	    padding: 14px 16px;
+	    transition: 0.3s;
+	}
+
+/* Change background color of buttons on hover */
+	div.tab button:hover {
+	    background-color: #ddd;
+	}
+
+/* Create an active/current tablink class */
+	div.tab button.active {
+	    background-color: #ccc;
+	}
+
+/* Style the tab content */
+	.tabcontent {
+	    display: none;
+	  	padding: 6px 12px;
+   		border: 1px solid #ccc;
+	    border-top: none;
+	}
+	
+
+</style>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="{% static "controlroom/css/main.css" %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script>
+		//document.getElementById("defaultOpen").click();
+		window.onload = function() {
+
+				openTab(event, 'Winners');
+		};
+
+		function openTab(evt, cert_type) {
+    		// Declare all variables
+    		var i, tabcontent, tablinks;
+    		// Get all elements with class="tabcontent" and hide them
+    		tabcontent = document.getElementsByClassName("tabcontent");
+    		for (i = 0; i < tabcontent.length; i++) {
+    	    	tabcontent[i].style.display = "none";
+    		}
+
+    		// Get all elements with class="tablinks" and remove the class "active"
+    		tablinks = document.getElementsByClassName("tablinks");
+    		for (i = 0; i < tablinks.length; i++) {
+    		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+   			}
+
+    		// Show the current tab, and add an "active" class to the button that opened the tab
+    		document.getElementById(cert_type).style.display = "block";
+    		evt.currentTarget.className += " active";
+		}
+
+		
+		function navsame(){
+			window.location = "/eventpage/"
+		}
+
+		
+
+		
+	</script>
+</head>
+<body style="overflow-x:hidden; ">
+			<div class="logos_section col-sm-12" style="margin-top:20px;">
+				<div class="col-sm-6">
+					<img onclick="navhome()" src="{% static "register/images/excel2017.png" %}"/>
+				</div>
+			</div>
+		<div id="res">
+		<div class="item_certi" id="res">
+		 <div margin-top = "2px"> 
+			<div class="tab">
+	  			<button class="tablinks" onclick="openTab(event, 'Day 1')" id="defaultOpen"><h4>Day 1</h4></button>
+	  			<button class="tablinks" onclick="openTab(event, 'Day 2')"><h4>Day 2</h4></button>
+				<button class="tablinks" onclick="openTab(event, 'Day 3')"><h4>Day 3</h4></button>
+				
+			</div>
+			<div id="Day 1" class="tabcontent">
+ 		 
+ 			<table width=100% >
+ 			 <tr style="font-weight:bold">
+ 		 		<td>EVENTNAME&emsp;</td>
+ 			 	</tr>
+ 			 {% for item in day1 %}
+ 			 	<tr >
+ 				 	<td style="cursor: pointer;cursor: hand;"><b><a href="/eventpage/{{ item.event_id}}">{{ item.event_name}}</a></b></td>
+ 			 	
+ 			 	</tr>
+ 			 {% endfor %}
+ 			</table>
+			</div>
+
+			<div id="Day 2" class="tabcontent">
+			 <table width=100% >
+			 <tr style="font-weight:bold" >
+				 <td>EVENTNAME&emsp;</td>
+ 			 	</tr>
+ 			 	{% for item in day2 %}
+ 			 	<tr >
+ 				 	<td style="cursor: pointer;cursor: hand;"><a href="/eventpage/{{ item.event_id}}">{{ item.event_name}}</a></td>
+ 			 	
+ 			 	</tr>
+ 			 {% endfor %}
+ 			 
+ 			 </table>  
+			</div>
+
+			<div id="Day 3" class="tabcontent">
+			
+ 			 <table width=100% >
+ 			 <tr style="font-weight:bold">
+ 			 	<td>EVENTNAME&emsp;</td>
+ 			 	</tr>
+ 			 {% for item in day3 %}
+ 			 	<tr >
+ 				 	<td style="cursor: pointer;cursor: hand;"><b><a href="/eventpage/{{ item.event_id}}">{{ item.event_name}}</a></b></td>
+ 			 	
+ 			 	</tr>
+ 			 {% endfor %}
+ 			 </table>
+			</div>
+
+			
+		</div> 
+	</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+body{
+  margin: 0;
+  font-family: 'Josefin Sans',sans-serif;
+  overflow-x:hidden; 
+}
+
+
+.button{
+  background-color: #1f7d56;
+  color: white;
+  padding: 15px 32px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 5px;
+  width:auto;
+}
+.button h3{
+  margin: 0;
+}
+
+h3{
+  font-family: 'Comfortaa', cursive;
+}
+
+.social{
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  padding: 30px;
+}
+.social a{
+  font-size: 40px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+
+
+@media(min-width:700px){
+ 
+ 
+  .names_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+  }
+  
+  .logos_section{
+    display: flex;
+    justify-content: space-around;
+  }
+   .logos_section img{
+    height: 50px;
+  }
+  
+}
+
+
+@media(max-width:700px){
+  .social{
+    width: 80%;
+  }
+  .social a{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .logos_section{
+    display: flex;
+    justify-content: space-around;
+  }
+  .logos_section img {
+    height: 50px;
+  }
+  .button{
+    margin:auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .names_container{
+    margin: auto;
+    width: 100%;
+  }
+  .names_container{
+    text-align: center;
+  }
+  .names_container>div{
+    margin-top:40px;
+  }
+  .text{
+    margin: auto;
+    width: 100%;
+  }
+}
+
+
+@media (min-width: 1400px){
+  .logos_section img{
+    height: 70px;
+  }
+}
+
+.instagram{
+  color: #dc3080;
+}
+.youtube{
+  color: #de2825;
+}
+.facebook{
+  color: #3b5998;
+}

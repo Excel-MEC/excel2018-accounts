@@ -1,0 +1,49 @@
+ body{
+   font-family: 'Josefin Sans',sans-serif;
+ }
+
+ .logos_section img{
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+
+.item{
+	height:200px;
+  padding: 20px;
+}
+
+.item_container{
+  margin-top: 187px;
+}
+
+
+.item_event{
+  margin-top: 121px;
+}
+
+@media(max-width: 767px){
+.item_container{
+  height: 500px;
+  margin-top: 253px;
+}
+}
+
+.button{
+  background-color: #d55d74;
+  color: white;
+  padding: 12px 0px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 5px;
+  width:100%;
+}
+
+.sel{
+    padding: 10px 16px  !important;
+    font-size: 18px  !important;
+    border-radius: 6px  !important;
+}

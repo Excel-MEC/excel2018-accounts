@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<title>Excel 2017 | Controlroom</title>
+<head>
+	{% load staticfiles %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="{% static "controlroom/css/main.css" %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript">
+		function changecolor(){
+			$(function(){
+				$("#tab > tbody > tr").each(function(){
+					var col_val = $(this).find("td:eq(5)").text();
+					var col_start =$(this).find("td:eq(4)").text();
+
+
+					var am_or_pm_start=col_start.split(" ");
+					var hours_and_min_start;
+					hours_and_min_start=am_or_pm_start[0].split(":");
+
+					if(am_or_pm_start[1]=="p.m."){
+						var temp=parseInt(hours_and_min_start[0]);
+						if(temp!=12)
+							temp+=12;
+						hours_and_min_start[0]=temp;}
+
+						hours_and_min_start[0]=parseInt(hours_and_min_start[0]);
+						hours_and_min_start[1]=parseInt(hours_and_min_start[1]);
+
+						if(isNaN(hours_and_min_start[1]))hours_and_min_start[1]=00;
+
+
+						var am_or_pm=col_val.split(" ");
+						var hours_and_min;
+						hours_and_min=am_or_pm[0].split(":");
+
+						if(am_or_pm[1]=="p.m."){
+							var temp=parseInt(hours_and_min[0]);
+							if(temp!=12)
+								temp+=12;
+							hours_and_min[0]=temp;}
+
+							hours_and_min[0]=parseInt(hours_and_min[0]);
+							hours_and_min[1]=parseInt(hours_and_min[1]);
+
+							if(isNaN(hours_and_min[1]))hours_and_min[1]=00;
+
+							var device_time=finddate().split(":");
+							device_time[0]=parseInt(device_time[0]);
+							device_time[1]=parseInt(device_time[1]);
+
+
+							if(hours_and_min_start[1]<5 && !isNaN(hours_and_min_start[0])){
+								hours_and_min_start[1]=60-(5-hours_and_min_start[1]);
+								hours_and_min_start[0]-=1;
+							}
+							else{
+								hours_and_min_start[1]-=5;
+							}
+
+							if(hours_and_min[1]<5 && !isNaN(hours_and_min[0])){
+								hours_and_min[1]=60-(5-hours_and_min[1]);
+								hours_and_min[0]-=1;
+							}
+							else{
+								hours_and_min[1]-=5;
+							}
+
+
+							if(hours_and_min_start[0]===device_time[0]){
+								if(device_time[1]>=hours_and_min_start[1]){
+									if(!$(this).hasClass("success")){	
+										$(this).removeClass("warning");
+										$(this).addClass("warning");}
+									} 
+								}
+								else if(hours_and_min_start[0]<device_time[0]) { 
+									if(!$(this).hasClass("success")){	
+										$(this).removeClass("warning");
+										$(this).addClass("warning");}
+									} 
+
+									if(hours_and_min[0]===device_time[0]){
+										if(device_time[1]>=hours_and_min[1]){
+											$(this).removeClass("success");
+											$(this).removeClass("danger");
+											$(this).addClass("danger");}
+										}
+										else if(hours_and_min[0]<device_time[0]) { $(this).removeClass("success");
+										$(this).removeClass("danger");
+										$(this).addClass("danger");}
+									});
+			});
+		}
+
+		function finddate(){
+			var currentdate = new Date();
+			var day = currentdate.getDate(); 
+			var hour = currentdate.getHours();
+			var min = currentdate.getMinutes();  
+			return(hour+":"+min);
+		}
+
+		changecolor();
+
+		function jsfunction(){
+			var c=document.getElementById("selctd").value;
+			if(c==="events of the day"){
+				window.location = window.location.pathname;	
+			}
+			else{
+
+				document.getElementById("text").value="";
+				document.getElementById("text").placeholder="Enter the value";
+				document.getElementById("res").innerHTML = "";
+				aja(c);
+			}
+		}
+
+		function refreshtable(){
+			$("#tab").load(location.href + " #tab>*", "",function(){
+				changecolor();           	
+			});
+
+			setTimeout(function(){
+				refreshtable();
+			}, 10000);
+		}
+		refreshtable();
+
+
+		function aja(c){
+			$.ajax({
+				type:"POST",
+				url: "/controlroom/",
+				headers: {'X-CSRFToken': '{{ csrf_token }}'},
+				data: {
+					"ajax": c
+				},
+				dataType: 'json',
+				success: function (data) {
+					var select = document.getElementById("browsers");  
+					var count=0;
+					for(var i =0; i< data.dataset.length; i++){
+						if(count===0){
+							select.innerHTML="<option value="+data.dataset[i]+"></option>"; 
+							count++;
+						}else{
+							select.innerHTML+="<option value="+data.dataset[i]+"></option>"; 
+						}
+					}
+				}
+			});
+		}
+
+		function navhome(){
+			window.location = "/controlroom/"
+		}
+
+		window.onload = function() {
+			var c=document.getElementById("selctd").value;
+			if(c!=="events of the day"){
+				document.getElementById("text").placeholder="Enter the value";
+				aja(c);
+			}
+		};
+
+		function update(x,s){
+
+			if(s==0){
+				var p=confirm("Are you sure you want to mark the event "+x+" as started?");
+
+				if(p){
+					$.ajax({
+						type:"POST",
+						url: "/controlroom/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"update": x+","+s
+						},
+						dataType: 'json',
+						success: function(data){
+							navhome();			}
+					});
+				}
+			}
+			else if(s==1){
+				var p1=confirm("Are you sure you want to mark the event "+x+" as completed?");
+
+				if(p1){
+					$.ajax({
+						type:"POST",
+						url: "/controlroom/",
+						headers: {'X-CSRFToken': '{{ csrf_token }}'},
+						data: {
+							"update": x+","+s
+						},
+						dataType: 'json',
+						success: function(data){
+							navhome();			}
+					});
+				}
+			}
+		}
+
+	</script>
+</head>
+<body style="overflow-x:hidden; " >
+	<nav class="navbar navbar-default navbar-fixed-top" role="header">
+		<div class="container1 container-fluid">
+			<div class="navbar-header logos_section col-sm-12" >
+				<div class="col-sm-6">
+					<img onclick="navhome()" src="{% static "register/images/excel2017.png" %}"/>
+				</div>
+			</div>
+			{% if error1 %}
+			<div class="text-danger text-center col-sm-6" role="alert">
+				<strong>Input needed</strong>
+			</div>
+			{% endif %}
+			{% if error2 %}
+			<div class="text-danger text-center col-sm-6 col-sm-offset-6" role="alert">
+				<strong>value field needed</strong>
+			</div>
+			{% endif %}
+			<form method="POST" action="." id="main">{%csrf_token%}
+				<div class="col-sm-12">
+					<div class="col-sm-6" style="margin-bottom:20px;">
+						<select class="sel form-control" name="searchby" text="{{ searchby }}" selected="selected" style="width:100%;height: 46px;" placeholder="Search for" onchange="jsfunction()" id="selctd" value="{{ searchby }}">
+							<option selected="{{ searchby }}" value="{{ searchby }}">{{ searchby }}</option>
+							<option value="venue">venue</option>
+							<option value="eventname">eventname</option>
+							<option value="excelid">excelid</option>
+							<option value="events of the day">events of the day</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group" style="margin-bottom:20px;">
+							<input id="text" type="text" class="form-control input-lg" value="{{value}}"  name="value" placeholder="Not applicable" list="browsers"/>
+							<datalist id="browsers">
+
+							</datalist>
+							<span class="input-group-btn">
+								<button class="btn btn-info btn-lg" style="background-color:#d55d74; border-color:#d55d74;" type="submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</nav>
+	<div class="item_container" id="res">
+		{% if len == 0 and error1 == False and error2 == False %}
+		<div class="text-danger text-center col-sm-6 item" role="alert">
+			<strong>No such value for this field!</strong>
+		</div>
+
+		{% elif error2 %}
+
+
+		{% elif searchby_num == 0 %}
+		<table class="table" id="tab2">
+			<thead>
+				<tr class="info">
+					<th>Venue ID</th>
+					<th>Venuemanager 1</th>
+					<th>Venuemanager 2</th>
+					<th>Venuemanager 1 num</th>
+					<th>Venuemanager 2 num</th>
+				</tr>
+			</thead>
+			{% for object in obj  %}
+			<tbody>
+				<tr>	
+					<td><a href="/venuepage/{{ object.venue_id }}">{{ object.venue_id }}</a></td>
+					<td>{{ object.vm_1 }}</td>
+					<td>{{ object.vm_2 }}</td>
+					<td>{{ object.vm_num_1 }}</td>
+					<td>{{ object.vm_num_2 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+
+		{% elif searchby_num == 1 %}
+		<table class="table table-responsive" id="tab">
+			<thead>
+				<tr class="info">
+					<th>Event ID</th>
+					<th>Event name</th>
+					<th>Venue ID</th>
+					<th>Day</th>
+					<th>StartTime</th>
+					<th>EndTime</th>
+				</tr>
+			</thead>
+			{% for object in obj  %}	
+			<tbody>
+				{% if object.status == 1 %}
+				<tr class="success">
+					{% else %}
+					<tr>
+						{% endif %}
+						<td><a href="/eventpage/{{ object.event_id }}">{{ object.event_id }}</a></td>
+						<td onclick='update("{{ object.event_id }}",{{ object.status }})' style="color:blue;cursor: pointer;cursor: hand;">{{ object.event_name }}</td>
+						<td>{{ object.venue_id }}</td>
+						<td>{{ object.day }}</td>
+						<td>{{ object.time }}</td>
+						<td>{{ object.endtime }}</td>
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+
+			{% elif searchby_num == 2 %}
+			<table class="table" id="tab1">
+				<thead>
+					<tr class="info">
+						<th>Excel ID</th>
+						<th>Name</th>
+						<th>College</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Participated Events</th>
+					</tr>
+				</thead>
+				{% for object in obj  %}	
+				<tbody>
+					<tr>
+						<td>EX{{ object.excelid }}</td>
+						<td>{{ object.name }}</td>
+						<td>{{ object.college }}</td>
+						<td>{{ object.email }}</td>
+						<td>{{ object.phone }}</td>
+						<td>
+						{% if object.participated_events == "" %}
+						Nil
+						{% else %}
+						{{ object.participated_events }}</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+￼
+
+
+
+			{% elif searchby_num == 3 %}
+			<table class="table" id="btab">
+				<thead>
+					<tr class="info">
+						<th>Event ID</th>
+						<th>Event name</th>
+						<th>Venue ID</th>
+						<th>Day</th>
+						<th>StartTime</th>
+						<th>EndTime</th>
+					</tr>
+				</thead>
+				{% for object in obj  %}	
+				<tbody>
+					<tr>
+						<td><a href="/eventpage/{{ object.event_id }}">{{ object.event_id }}</a></td>
+						<td>{{ object.event_name }}</td>
+						<td>{{ object.venue_id }}</td>
+						<td>{{ object.day }}</td>
+						<td>{{ object.time }}</td>
+						<td>{{ object.endtime }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif %}
+
+
+	</div>
+</body>
+</html>

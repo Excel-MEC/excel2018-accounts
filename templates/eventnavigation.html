@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    {% load staticfiles %}
+		<meta charset="utf-8">
+		<title>Excel 2017 |Controlroom</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static "controlroom/css/venue.css" %}">
+		<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+		<script type="text/javascript">
+			function navhome(){
+			window.location = "/controlroom/"
+		}	
+		</script>
+	</head>
+	
+	<body>
+		<div class="container" style="text-align: center;margin: auto;padding: auto;padding-top:10px;">
+			<div class="row">
+				<div class="text-center col-sm-12">
+					<h3 class="k" >{{ venue.venue_id }}</h3>
+				</div>
+				<div class="col-sm-12" style="margin-top:100px;">
+				<h1 >Events</h1>
+				<table class="table table-responsive table-bordered">
+					<thead>
+						<tr>
+							<td>Eventname</td>
+							<td>Navigate</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for event in events %}
+						<tr>
+							<td>{{ event.event_name }}</td>
+							<td><div class="col-sm-offset-4 col-sm-4"><a href="/eventpage/{{ event.event_id }}/"><button class="button">Navigate</button></a></div></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -148,3 +148,144 @@ class SchoolReg(TemplateView):
 			}
 			return render(request,"excelid.html",context)
 		return render(request,"studentreg.html",context)
+
+def Certi(request):
+
+	error1=False
+	sb=0
+	result=0
+	if request.method == 'POST':
+		if request.POST.get('certificate'):
+			certificate=request.POST.get('certificate')
+			list=certificate.split(',')
+			obj=winners.objects.get(excelid=list[0],event=list[1])
+			obj.printed = not obj.printed
+			obj.save()
+			d=[]
+			data={
+			'dataset':d
+			}
+			return JsonResponse(data)
+		if request.POST.get('certificate1'):
+			certificate=request.POST.get('certificate1')
+			obj=userinfo.objects.get(excelid=certificate)
+			obj.printed = not obj.printed
+			obj.save()
+			d=[]
+			data={
+			'dataset':d
+			}
+			return JsonResponse(data)
+		if request.POST.get('value'):
+			value=request.POST.get('value')
+			result=userinfo.objects.filter(excelid=value)
+			if(len(result)==0):
+				result=paid_userinfo.objects.filter(excelid=value)
+			sb=1
+			if(len(result)==0):
+				error1=True
+				sb=0
+
+		if request.POST.get('paid_short'):	
+			paid_short=request.POST.get('paid_short')
+			obj=paid_userinfo.objects.get(excelid=paid_short)
+			obj.printed = not obj.printed
+			obj.save()
+			d=[]
+			data={
+			'dataset':d
+			}
+			return JsonResponse(data)
+		if request.POST.get('paid_win'):
+			paid_win=request.POST.get('paid_win')
+			list=paid_win.split(',')
+			obj=paid_winners.objects.get(excelid=list[0],event=list[1])
+			obj.printed = not obj.printed
+			obj.save()
+			d=[]
+			data={
+			'dataset':d
+			}
+			return JsonResponse(data)
+		
+
+	win = winners.objects.all()
+	paid_win = paid_winners.objects.all()
+	paid_usr = paid_userinfo.objects.all()
+	win1=win.exclude(college = "Model Engineering College")
+	usr = userinfo.objects.exclude(college = "Model Engineering College")
+	context = {
+	"sb":sb,
+	"obj":result,
+	"win_obj": win1,
+	"paid_win_obj": paid_win,
+	"paid_usr":paid_usr,
+	"usr": usr,
+	"error1":error1
+	}
+	return render(request,"certificate.html",context)
+
+class SearchByView(TemplateView):
+	def get(self,request,*args,**kwargs):
+		searchby="phone"
+		context={
+		"title":"testing",
+		"searchby":searchby
+		}
+		return render(request,"searchby.html",context)
+
+	def post(self,request,*args,**kwargs):
+		error1=False
+		error2=False
+		result=[]
+		sb=-1
+		searchby=request.POST.get('searchby')
+		value=request.POST.get('value')
+
+		if request.POST.get('id'):
+			id=request.POST.get('id')
+			obj = userinfo.objects.get(excelid=id)
+			obj.present = not obj.present
+			obj.save()
+			d=[]
+			data = {
+			'dataset':d
+			}
+			return JsonResponse(data)
+
+
+
+		if((searchby=="" or searchby==None) and (value=="Not Applicable" or value=="")):
+			error1=True
+		if((searchby=="phone no:" or searchby=="excelid") and value==""):
+			error2=True
+		if(searchby=="phone"):
+			result=userinfo.objects.filter(phone=value)
+			if(len(result)==0):
+				result=paid_userinfo.objects.filter(phone=value)
+			sb=0
+		elif(searchby=="excelid"):
+			result=userinfo.objects.filter(excelid=value)
+			if(len(result)==0):
+				result=paid_userinfo.objects.filter(excelid=value)
+			sb=0
+		elif(searchby=="name"):
+			result=userinfo.objects.filter(name__icontains=value)
+			obj=paid_userinfo.objects.filter(name__icontains=value)
+			result = list(chain(result,obj))
+
+			# if(len(result)==0):
+			# 	result=paid_userinfo.objects.filter(name__icontains=value)
+			sb=0
+
+		context={
+		"title":"testing",
+		"searchby":searchby,
+		"value":value,
+		"error1":error1,
+		"error2":error2,
+		"searchby_num":sb,
+		"obj":result,
+		"len":len(result)
+		}
+		return render(request,"searchby.html",context)

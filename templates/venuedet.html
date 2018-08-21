@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    {% load staticfiles %}
+		<meta charset="utf-8">
+		<title>Excel 2017 |Controlroom</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static "controlroom/css/venue.css" %}">
+		<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+		<script type="text/javascript">
+			function navhome(){
+			window.location = "/controlroom/"
+		}	
+		</script>
+	</head>
+	
+	<body>
+	<div class="logos_section">
+		<img onclick="navhome()" src="{% static "register/images/excel2017.png" %}"/>
+	</div>	
+		<div class="container" style="text-align: center;margin: auto;padding: auto;padding-top:10px;">
+			<div class="row">
+				<div class="text-center col-sm-12">
+					<h3 class="k" >{{ venue.venue_id }}</h3>
+				</div>
+				<div class="col-md-6">
+					<h1>{{ venue.vm_1 }}</h1>
+					<p style="font-size:20px;">{{ venue.vm_num_1 }}</p>
+				</div>
+				<div class="col-md-6">
+					<h1>{{ venue.vm_2 }}</h1>
+					<p style="font-size:20px;">{{ venue.vm_num_1 }}</p>
+				</div>
+
+				<div class="col-md-4" style="margin-top:100px;">
+					<h1 style="font-size:25px;">Power team member</h1>
+					<p style="font-size:20px;">{{ venue.power }} : {{ venue.power_num }}</p>
+
+				</div>
+
+				<div class="col-md-4" style="margin-top:100px;">
+					<h1 style="font-size:25px;">Venue status</h1>
+					{% if venue.occupied %}
+						<p style="font-size:20px;color:red;">Occupied</p>
+					{% else %} 
+						<p style="font-size:20px;color:green;">Free</p>
+					{% endif %}
+				</div>
+				<div class="col-md-4" style="margin-top:100px;">
+					<h1 style="font-size:25px;">Current event</h1>
+						<p style="font-size:20px;color:green;">{{ venue.current_event }}</p>
+				</div>
+				<div class="col-sm-12" style="margin-top:100px;">
+				<h1 >Events in this venue</h1>
+				<table class="table table-responsive table-bordered">
+					<thead>
+						<tr>
+							<td>Eventname</td>
+							<td>Day</td>
+							<td>Time</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for event in events %}
+						<tr>
+							<td>{{ event.event_name }}</td>
+							<td>{{ event.day }}</td>
+							<td>{{ event.time }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				</div>
+				<div class="col-sm-4 col-sm-offset-4" style="margin-top:50px;">
+					<a href="/venuepage/{{ venue.venue_id }}/create/"><button class="button">Update</button></a> 
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

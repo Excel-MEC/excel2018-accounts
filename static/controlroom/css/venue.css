@@ -1,0 +1,29 @@
+body{
+  margin: 0;
+  font-family: 'Josefin Sans',sans-serif;
+  overflow-x:hidden; 
+}
+
+.k{
+	color: #d55d74;
+	font-size: 40px;
+}
+
+.logos_section img{
+    height: 100px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+
+.button{
+  background-color: #d55d74;
+  color: white;
+  padding: 12px 0px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 5px;
+  width:100%;
+}
