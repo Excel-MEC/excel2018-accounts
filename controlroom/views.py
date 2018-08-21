@@ -209,8 +209,6 @@ class ControlRoomView(TemplateView):
 
                     obj.save()	
 
-
-
                     d=[]
                     data={
                         'dataset':d
@@ -267,9 +265,9 @@ class EventView(TemplateView):
         }
         return render(request,"eventview.html",context)
 def Intermediate(request):
-    queryset1=event.objects.filter(day='2017-10-05')
-    queryset2=event.objects.filter(day='2017-10-06')
-    queryset3=event.objects.filter(day='2017-10-07')
+    queryset1=event.objects.filter(day='2018-10-05')
+    queryset2=event.objects.filter(day='2018-10-06')
+    queryset3=event.objects.filter(day='2018-10-07')
     context={
         "day1":queryset1,
         "day2":queryset2,
