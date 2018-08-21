@@ -131,6 +131,7 @@ def PostCreate(request, pk=None):
 								queryset.participated_events=""
 							pp=queryset.participated_events.split(",")
 							if stri not in pp:
+                                                        
 								queryset.participated_events=queryset.participated_events+stri +","
 								queryset.save()
 		instance = form.save(commit=False)
@@ -149,10 +150,8 @@ def PostCreate(request, pk=None):
 class ControlRoomView(TemplateView):
 	def get(self,request,*args,**kwargs):
 		today = datetime.datetime.today()
-
 		result=event.objects.filter(day__day=today.day,status__in=[0,1]).order_by('time')
 		sb=1
-		
 		context={
 		"title":"testing",
 		"searchby":"events of the day",
@@ -161,7 +160,6 @@ class ControlRoomView(TemplateView):
 		"len":len(result)
 		}
 		return render(request,"controlroom.html",context)
-
 	
 	def post(self,request,*args,**kwargs):
 		error1=False
