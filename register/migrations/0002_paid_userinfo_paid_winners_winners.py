@@ -5,51 +5,54 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('register', '0001_initial'),
-    ]
+	dependencies = [
+		('register', '0001_initial'),
+	]
 
-    operations = [
-        migrations.CreateModel(
-            name='paid_userinfo',
-            fields=[
-                ('excelid', models.CharField(default='excel', max_length=10, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100, null=True)),
-                ('college', models.CharField(max_length=100, null=True)),
-                ('email', models.EmailField(max_length=50, null=True)),
-                ('phone', models.CharField(max_length=10, null=True)),
-                ('present', models.BooleanField(default=False)),
-                ('stay', models.BooleanField(default=False)),
-                ('printed', models.BooleanField(default=False)),
-                ('event', models.CharField(max_length=100, null=True)),
-            ],
-            options={
-                'verbose_name': 'paid_userinfo',
-                'verbose_name_plural': 'paid_userinfos',
-            },
-        ),
-        migrations.CreateModel(
-            name='paid_winners',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('excelid', models.CharField(blank=True, max_length=30)),
-                ('event', models.CharField(blank=True, max_length=50)),
-                ('name', models.CharField(max_length=100, null=True)),
-                ('college', models.CharField(blank=True, max_length=50)),
-                ('position', models.IntegerField(default=0)),
-                ('printed', models.BooleanField(default=False)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='winners',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('excelid', models.CharField(blank=True, max_length=30)),
-                ('event', models.CharField(blank=True, max_length=50)),
-                ('name', models.CharField(max_length=100, null=True)),
-                ('college', models.CharField(blank=True, max_length=50)),
-                ('position', models.IntegerField(default=0)),
-                ('printed', models.BooleanField(default=False)),
-            ],
-        ),
-    ]
+	operations = [
+		migrations.CreateModel(
+			name='paid_userinfo',
+			fields=[
+				('excelid', models.CharField(default='excel',
+                                             max_length=10, primary_key=True, serialize=False)),
+				('name', models.CharField(max_length=100, null=True)),
+				('college', models.CharField(max_length=100, null=True)),
+				('email', models.EmailField(max_length=50, null=True)),
+				('phone', models.CharField(max_length=10, null=True)),
+				('present', models.BooleanField(default=False)),
+				('stay', models.BooleanField(default=False)),
+				('printed', models.BooleanField(default=False)),
+				('event', models.CharField(max_length=100, null=True)),
+			],
+			options={
+				'verbose_name': 'paid_userinfo',
+				'verbose_name_plural': 'paid_userinfos',
+			},
+		),
+		migrations.CreateModel(
+			name='paid_winners',
+			fields=[
+				('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+				('excelid', models.CharField(blank=True, max_length=30)),
+				('event', models.CharField(blank=True, max_length=50)),
+				('name', models.CharField(max_length=100, null=True)),
+				('college', models.CharField(blank=True, max_length=50)),
+				('position', models.IntegerField(default=0)),
+				('printed', models.BooleanField(default=False)),
+			],
+		),
+		migrations.CreateModel(
+			name='winners',
+			fields=[
+				('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+				('excelid', models.CharField(blank=True, max_length=30)),
+				('event', models.CharField(blank=True, max_length=50)),
+				('name', models.CharField(max_length=100, null=True)),
+				('college', models.CharField(blank=True, max_length=50)),
+				('position', models.IntegerField(default=0)),
+				('printed', models.BooleanField(default=False)),
+			],
+		),
+	]

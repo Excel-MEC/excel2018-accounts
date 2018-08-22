@@ -3,90 +3,91 @@ from django.views.generic import TemplateView
 from register.forms import RegistrationForm, PaidRegistrationForm, StudentForm
 import string
 from django.http import JsonResponse
-from register.models import userinfo,winners,paid_userinfo,paid_winners
+from register.models import userinfo, winners, paid_userinfo, paid_winners
 import pyqrcode
-import sys
 from django.http import HttpResponseRedirect
 import random
 
+
 def genexid(size=4, nums=string.digits):
-	exid=''
-	for _ in range(size):
-	 exid += random.choice(nums)
-	return exid
+    exid = ''
+    for _ in range(size):
+        exid += random.choice(nums)
+    return exid
+
 
 def uniqueid(x):
-        code=  x + genexid()
-        qs = userinfo.objects.filter(excelid=code).exists()
-        if qs:
-            uniqueid()
-        return code
+		code=  x + genexid()
+		qs = userinfo.objects.filter(excelid=code).exists()
+		if qs:
+			uniqueid()
+		return code
 
 class RegView(TemplateView):
 
-    def get(self, request, *args, **kwargs):
-        form = RegistrationForm()
-        context = {
-           "title": "testing",
-           "form": form
-        }
-        return render(request, "home.html", context)
+	def get(self, request, *args, **kwargs):
+		form = RegistrationForm()
+		context = {
+		   "title": "testing",
+		   "form": form
+		}
+		return render(request, "home.html", context)
 
-    def post(self,request,*args,**kwargs):
-        context = {
+	def post(self,request,*args,**kwargs):
+		context = {
 		"title": "testing",
 		"form": form
 		}
-        if form.is_valid():
-            mail = form.cleaned_data.get('email')
-            name = form.cleaned_data.get('name')
-            phone = form.cleaned_data.get('phone')
-            college = form.cleaned_data.get('college')
-            stay1 = form.cleaned_data.get('stay') 
-            code = uniqueid('6')
-            u = userinfo(excelid=code, name=name, college=college, email=mail, phone=phone, stay=stay1)
-            u.save()
+		if form.is_valid():
+			mail = form.cleaned_data.get('email')
+			name = form.cleaned_data.get('name')
+			phone = form.cleaned_data.get('phone')
+			college = form.cleaned_data.get('college')
+			stay1 = form.cleaned_data.get('stay')
+			code = uniqueid('6')
+			u = userinfo(excelid=code, name=name, college=college, email=mail, phone=phone, stay=stay1)
+			u.save()
 			# obj=userinfo.objects.get(email=mail)
 			# im=pyqrcode.create(obj.excelid)
 			# im.svg('static/qrcodes/%s.svg'%(obj.excelid),scale=20)
-            return render(request,"success.html",{"name":name})
+			return render(request,"success.html",{"name":name})
 
-        return render(request,"home.html",context)
+		return render(request,"home.html",context)
 
 class PaidReg(TemplateView):
-    def get(self, request, *args, **kwargs):
-        form = PaidRegistrationForm()
-        context={
+	def get(self, request, *args, **kwargs):
+		form = PaidRegistrationForm()
+		context={
 		"title":"testing",
 		"form":form
 		}
-        return render(request,"paidreg.html",context)
-    
-    def post(self, request, *args, **kwargs):
-        form = PaidRegistrationForm(request.POST)
-        context={
-		"title":"testing",
-		"form":form
-		}
+		return render(request,"paidreg.html",context)
 
-        if form.is_valid():
-            mail=form.cleaned_data.get('email')
-            name=form.cleaned_data.get('name')
-            phone=form.cleaned_data.get('phone')
-            college=form.cleaned_data.get('college')
-            stay=form.cleaned_data.get('stay')
-            event=form.cleaned_data.get('event')
-            code=uniqueid('7')
-            u=paid_userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,event=event,stay=stay,present=True)
-            u.save()
-            #flag for offlinereg or paidreg
-            flag            
-            context = {
-	            "excelid":code,
-	            "flag" : flag 
-            }
-            return render(request,"excelid.html",context)
-        return render(request,"paidreg.html",context)
+	def post(self, request, *args, **kwargs):
+		form = PaidRegistrationForm(request.POST)
+		context = {
+                "title": "testing",
+                "form": form
+                }
+
+		if form.is_valid():
+			mail=form.cleaned_data.get('email')
+			name=form.cleaned_data.get('name')
+			phone=form.cleaned_data.get('phone')
+			college=form.cleaned_data.get('college')
+			stay=form.cleaned_data.get('stay')
+			event=form.cleaned_data.get('event')
+			code=uniqueid('7')
+			u=paid_userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,event=event,stay=stay,present=True)
+			u.save()
+			#flag for offlinereg or paidreg
+			flag
+			context = {
+				"excelid":code,
+				"flag" : flag
+			}
+			return render(request,"excelid.html",context)
+		return render(request,"paidreg.html",context)
 
 class OfflineReg(TemplateView):
 	def get(self,request,*args,**kwargs):
@@ -118,7 +119,7 @@ class OfflineReg(TemplateView):
 
 			context = {
 				"excelid":code,
-				"flag" : flag 
+				"flag" : flag
 			}
 			return render(request,"excelid.html",context)
 		return render(request,"offlinereg.html",context)
@@ -150,7 +151,7 @@ class SchoolReg(TemplateView):
 
 			context = {
 				"excelid":code,
-				"flag" : flag 
+				"flag" : flag
 			}
 			return render(request,"excelid.html",context)
 		return render(request,"studentreg.html",context)
@@ -192,7 +193,7 @@ def Certi(request):
 				error1=True
 				sb=0
 
-		if request.POST.get('paid_short'):	
+		if request.POST.get('paid_short'):
 			paid_short=request.POST.get('paid_short')
 			obj=paid_userinfo.objects.get(excelid=paid_short)
 			obj.printed = not obj.printed
@@ -213,7 +214,7 @@ def Certi(request):
 			'dataset':d
 			}
 			return JsonResponse(data)
-		
+
 
 	win = winners.objects.all()
 	paid_win = paid_winners.objects.all()
@@ -281,7 +282,7 @@ class SearchByView(TemplateView):
 			result = list(chain(result,obj))
 
 			# if(len(result)==0):
-			# 	result=paid_userinfo.objects.filter(name__icontains=value)
+			#	result=paid_userinfo.objects.filter(name__icontains=value)
 			sb=0
 
 		context={

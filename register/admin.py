@@ -1,6 +1,6 @@
 from django.contrib import admin
-from register.models import userinfo,winners,paid_userinfo,paid_winners
-from controlroom.models import venue,event
+from register.models import userinfo, winners, paid_userinfo, paid_winners
+from controlroom.models import venue, event
 # Register your models here.
 
 admin.site.register(userinfo)
