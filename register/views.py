@@ -34,6 +34,7 @@ class RegView(TemplateView):
 		return render(request, "home.html", context)
 
 	def post(self,request,*args,**kwargs):
+		form = RegistrationForm()
 		context = {
 		"title": "testing",
 		"form": form
@@ -81,7 +82,7 @@ class PaidReg(TemplateView):
 			u=paid_userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,event=event,stay=stay,present=True)
 			u.save()
 			#flag for offlinereg or paidreg
-			flag
+			flag=0
 			context = {
 				"excelid":code,
 				"flag" : flag

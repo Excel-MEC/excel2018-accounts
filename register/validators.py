@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from register.models import userinfo
 from django.core.validators import EmailValidator
 '''from validate_email import validate_email'''
+from .models import paid_userinfo
 
 
 def redundantmail(value):
