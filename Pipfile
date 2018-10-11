@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-rest-framework = "==0.1.0"
+djangorestframework = "==3.8.2"
+"psycopg2" = "==2.7.5"
+"psycopg2-binary" = "==2.7.5"
+pytz = "==2018.5"
+reportlab = "==3.5.5"
+Django = "==2.1"
+Pillow = "==5.2.0"
+PyQRCode = "==1.2.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.5"

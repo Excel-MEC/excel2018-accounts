@@ -78,11 +78,10 @@ WSGI_APPLICATION = 'accounts.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-		'NAME': 'excel2018_accounts',
-		'USER': 'admin',
-		'PASSWORD': 'pass',
-		'HOST': 'localhost',
-		'PORT': '',
+		'NAME': 'postgres',
+		'USER': 'postgres',
+		'HOST': 'db',
+		'PORT': 5432,
 	}
 }
 
