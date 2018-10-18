@@ -1,0 +1,56 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+
+<html>
+	<head>
+	    {% load staticfiles %}
+		<meta charset="utf-8">
+		<title>Excel 2017 |Update</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static 'register/css/main.css' %}">
+		<script src="https://use.fontawesome.com/75bc5066dd.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	
+	<body>
+		<div class="container" style="text-align: center;margin: auto;padding: auto;padding-top:10px;">
+			<div class="row">
+				<div class="text-center col-sm-12">
+					<h3>Update</h3>
+					{% if form.errors %}
+					<div class="text-danger">Please correct the error{{ form.errors|pluralize }} below.</div>
+					{% endif %}
+					<div class="col-sm-12 "style="margin-top:20px;">
+						<form method="POST" action=".">{%csrf_token%}
+						 <div class="control-group {%if field.errors %}error{%endif%}">
+						 <div class="row update-form">
+							{{form}}
+						</div>
+						<input type="submit" value="Update" class="button" style="margin-top:20px;">
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row modal-footer f1" style="margin-top:30px;">
+				<h3 style="text-align: center;"></h3>
+				
+				<div class="social">
+					<a class="facebook" target="_blank" href="http://facebook.com/excelmec"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+					<a class="youtube" target="_blank" href="https://www.youtube.com/channel/UCLP9HOgPekLpFzv2xIVwoFg"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+					<a class="instagram" target="_blank" href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+				</div>		
+				<div class="logos_section">
+					<a href="http://mec.ac.in/" target="_blank"><img src="{% static "register/images/mec_logo.png" %}"></a>
+					<img src="{% static "register/images/excel2017.png" %}">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
