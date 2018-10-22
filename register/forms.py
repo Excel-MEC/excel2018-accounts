@@ -484,4 +484,4 @@ class StudentForm(forms.Form):
     }))
 
     def clean(self):
-        cleaned_data = super(studentform, self).clean()
+        cleaned_data = super(StudentForm, self).clean()
