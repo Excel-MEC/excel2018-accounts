@@ -179,14 +179,14 @@ class ControlRoomView(TemplateView):
                 list1=event.objects.values_list('event_name',flat=True)
             elif(ajax=="excelid"):
                 list1=[]
-                d=[]
-                for li in list1:
-                    li.replace("u","")
-                    d.append(li)
-                    data = {
-                        'dataset': d
-                    }
-                    return JsonResponse(data)
+            d=[]
+            for li in list1:
+                li.replace("u","")
+                d.append(li)
+            data = {
+                'dataset': d
+            }
+            return JsonResponse(data)
 
         if request.POST.get('update'):
             list=request.POST.get('update')
@@ -216,35 +216,34 @@ class ControlRoomView(TemplateView):
             }
             return JsonResponse(data)
 
-            if((searchby=="" or searchby==None) and (value=="Not Applicable" or value=="")):
-                error1=True
-            if((searchby=="venue" or searchby=="eventname" or searchby=="excelid") and value==""):
-                error2=True
+        if((searchby=="" or searchby==None) and (value=="Not Applicable" or value=="")):
+            error1=True
+        if((searchby=="venue" or searchby=="eventname" or searchby=="excelid") and value==""):
+            error2=True
+        if(searchby=="venue"):
+            result=venue.objects.filter(venue_id=value)
+            sb=0
+        elif(searchby=="eventname"):
+            value="_".join(value.split(" "))
+            result=event.objects.filter(event_name__icontains=value)
+            sb=3
+        elif(searchby=="excelid"):
+            result=userinfo.objects.filter(excelid=value)
+            if(len(result)==0):
+                result=paid_userinfo.objects.filter(excelid=value)
+                sb=2
 
-            if(searchby=="venue"):
-                result=venue.objects.filter(venue_id=value)
-                sb=0
-            elif(searchby=="eventname"):
-                value="_".join(value.split(" "))
-                result=event.objects.filter(event_name__icontains=value)
-                sb=3
-            elif(searchby=="excelid"):
-                result=userinfo.objects.filter(excelid=value)
-                if(len(result)==0):
-                    result=paid_userinfo.objects.filter(excelid=value)
-                    sb=2
-
-            context={
-                "title":"testing",
-                "searchby":searchby,
-                "value":value,
-                "error1":error1,
-                "error2":error2,
-                "searchby_num":sb,
-                "obj":result,
-                "len":len(result)
-            }
-            return render(request,"controlroom.html",context)
+        context={
+            "title":"testing",
+            "searchby":searchby,
+            "value":value,
+            "error1":error1,
+            "error2":error2,
+            "searchby_num":sb,
+            "obj":result,
+            "len":len(result)
+        }
+        return render(request,"controlroom.html",context)
 
 
 class EventView(TemplateView):
