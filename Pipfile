@@ -13,6 +13,7 @@ reportlab = "==3.5.5"
 Django = "==2.1"
 Pillow = "==5.2.0"
 PyQRCode = "==1.2.1"
+django-crispy-forms = "*"
 
 [dev-packages]
 

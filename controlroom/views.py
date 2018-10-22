@@ -108,45 +108,40 @@ def PostCreate(request, pk=None):
                                 if not winners.objects.filter(event=event_name,excelid=Exid):
                                     obj1_winner=winners(event=event_name,name=name,college=college,position=winner_list.index(lists)+1,excelid=Exid)
                                     obj1_winner.save()
-                                else :
-                                    queryset=paid_userinfo.objects.filter(excelid=Exid)
-                                    for obj in queryset:
+                        else :
+                            queryset=paid_userinfo.objects.filter(excelid=Exid)
+                            for obj in queryset:
                                         name=obj.name
                                         college= obj.college
                                         if not paid_winners.objects.filter(event=event_name,excelid=Exid):
                                             obj1_winner=paid_winners(event=event_name,name=name,college=college,position=winner_list.index(lists)+1,excelid=Exid)
                                             obj1_winner.save()
 
-                                if form.cleaned_data.get('participants')!="nil" and form.cleaned_data.get('participants')!="":
-                                    event_name=form.cleaned_data.get('event_name')
-                                    event_id=form.cleaned_data.get('event_id')
-                                    eventlist=event.objects.filter(event_id=event_id)
-                                    participants=form.cleaned_data.get('participants').split(",")
-                                    if len(participants)!=0:
-                                        stri=event_id
-                                        for Exid in participants:
-                                            if Exid !="nil" and Exid !="":
-                                                if eventlist[0].paid == False :
-                                                    queryset=userinfo.objects.get(excelid=Exid)
-                                                    if queryset.participated_events=="nil":
-                                                        queryset.participated_events=""
-                                                        pp=queryset.participated_events.split(",")
-                                                        if stri not in pp:
+        if form.cleaned_data.get('participants')!="nil" and form.cleaned_data.get('participants')!="":
+            event_name=form.cleaned_data.get('event_name')
+            event_id=form.cleaned_data.get('event_id')
+            eventlist=event.objects.filter(event_id=event_id)
+            participants=form.cleaned_data.get('participants').split(",")
+            if len(participants)!=0:
+                stri=event_id
+                for Exid in participants:
+                    if Exid !="nil" and Exid !="":
+                        if eventlist[0].paid == False :
+                            queryset=userinfo.objects.get(excelid=Exid)
+                            if queryset.participated_events=="nil":
+                                queryset.participated_events=""
+                            pp=queryset.participated_events.split(",")
+                            if stri not in pp:
+                                queryset.participated_events = queryset.participated_events+stri + ","
+                                queryset.save()
+        instance = form.save(commit=False)
+        instance.save()
+        return HttpResponseRedirect(link)
 
-                                                            queryset.participated_events = queryset.participated_events+stri + ","
-                                                            queryset.save()
-                                instance = form.save(commit=False)
-                                instance.save()
-                                return HttpResponseRedirect(link)
-
-                context = {
-                    "form": form,
-                }
-                return render(request, "test.html", context)
-
-
-
-
+    context = {
+        "form": form,
+    }
+    return render(request, "test.html", context)
 
 class ControlRoomView(TemplateView):
     def get(self,request,*args,**kwargs):
@@ -347,7 +342,7 @@ class VenueUpdate(TemplateView):
     def get(self,request,*args,**kwargs):
         venue1=self.kwargs['ven']
         instance = venue.objects.get(venue_id=venue1)
-        form = venueform(request.POST or None, instance=instance)
+        form = Venueform(request.POST or None, instance=instance)
         context = {
             "form": form,
         }
