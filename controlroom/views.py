@@ -36,18 +36,18 @@ def generatepdf(win,event):
     for obj in win:
         data.append(["EX"+obj.excelid,obj.name,obj.phone])
 
-        t = Table(data,2*[2*inch], len(data)*[0.3*inch])
-        t.setStyle(TableStyle([
-            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-            ('TEXTCOLOR',(0,0),(-1,0),colors.green),
-        ]))
-        k="<b>"
-        k=k+event+"-SHORTLIST"
-        k=k+"</b>"
-        elements.append(Paragraph(k,centered))
-        elements.append(t)
-        doc.build(elements)
+    t = Table(data,2*[2*inch], len(data)*[0.3*inch])
+    t.setStyle(TableStyle([
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        ('TEXTCOLOR',(0,0),(-1,0),colors.green),
+    ]))
+    k="<b>"
+    k=k+event+"-SHORTLIST"
+    k=k+"</b>"
+    elements.append(Paragraph(k,centered))
+    elements.append(t)
+    doc.build(elements)
 
 def generatepdfwinners(win,event):
     s="static/pdf/winners"+event
@@ -64,18 +64,18 @@ def generatepdfwinners(win,event):
                   )
     for obj in win:
         data.append([obj.position,"EX"+obj.excelid,obj.name,obj.college])
-        t=Table(data,2*[2*inch], len(data)*[0.3*inch])
-        t.setStyle(TableStyle([
-            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-            ('TEXTCOLOR',(0,0),(-1,0),colors.green),
-        ]))
-        k="<b>"
-        k=k+event+"-WINNERS"
-        k=k+"</b>"
-        elements.append(Paragraph(k,centered))
-        elements.append(t)
-        doc.build(elements)
+    t=Table(data,2*[2*inch], len(data)*[0.3*inch])
+    t.setStyle(TableStyle([
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        ('TEXTCOLOR',(0,0),(-1,0),colors.green),
+    ]))
+    k="<b>"
+    k=k+event+"-WINNERS"
+    k=k+"</b>"
+    elements.append(Paragraph(k,centered))
+    elements.append(t)
+    doc.build(elements)
 
 
 def PostCreate(request, pk=None):
@@ -320,15 +320,15 @@ class Download(TemplateView):
                 for eid in shortlisted:
                     if eid != "nil" and eid != "":
                         short.append(userinfo.objects.get(excelid=eid))
-                    else:
-                        short=[]
-                        for eid in shortlisted:
-                            if eid != "nil" and eid !="":
-                                short.append(paid_userinfo.objects.get(excelid=eid))
-                        generatepdf(short,event1)
-                else:
-                    short=[]
-                    generatepdf(short,event1)
+            else:
+                short=[]
+                for eid in shortlisted:
+                    if eid != "nil" and eid !="":
+                        short.append(paid_userinfo.objects.get(excelid=eid))
+            generatepdf(short,event1)
+        else:
+            short=[]
+            generatepdf(short,event1)
         filename = "static/pdf/"+event1
         filename = filename+"-shortlisted.pdf"
         fname = event1+"-shortlisted.pdf"
