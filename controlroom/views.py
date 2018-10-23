@@ -226,7 +226,7 @@ class ControlRoomView(TemplateView):
             result=userinfo.objects.filter(excelid=value)
             if(len(result)==0):
                 result=paid_userinfo.objects.filter(excelid=value)
-                sb=2
+            sb=2
 
         context={
             "title":"testing",
@@ -383,12 +383,12 @@ class WinnerDownload(TemplateView):
             win = winners.objects.filter(event = obj.event_name).order_by('position')
         else:
             win = paid_winners.objects.filter(event = obj.event_name).order_by('position')
-            generatepdfwinners(win,event1)
-            filename = "static/pdf/winners"+event1
-            filename = filename+"-winners.pdf"
-            fname = event1+"-winners.pdf"
-            with open(filename, 'rb') as pdf:
-                response = HttpResponse(pdf.read())
-                response['content_type'] = 'application/pdf'
-                response['Content-Disposition'] = 'attachment;filename=%s' % fname
-                return response
+        generatepdfwinners(win,event1)
+        filename = "static/pdf/winners"+event1
+        filename = filename+"-winners.pdf"
+        fname = event1+"-winners.pdf"
+        with open(filename, 'rb') as pdf:
+            response = HttpResponse(pdf.read())
+            response['content_type'] = 'application/pdf'
+            response['Content-Disposition'] = 'attachment;filename=%s' % fname
+            return response
