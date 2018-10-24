@@ -12,7 +12,7 @@ from rest_framework.generics import RetrieveAPIView
 from .serializers import api, winnerapi
 from rest_framework.generics import ListAPIView
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter  
+from reportlab.lib.pagesizes import letter
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.pagesizes import inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
