@@ -291,7 +291,7 @@ class Download(TemplateView):
 
 class EventNav(TemplateView):
     def get(self,request,*args,**kwargs):
-        obj = event.objects.all().order_by('day')
+        obj = event.objects.all().order_by('status')
         context={
             "events":obj,
         }
