@@ -8,7 +8,7 @@ from .models import paid_userinfo
 def redundantmail(value):
     qs_exists = userinfo.objects.filter(email=value).exists()
     if qs_exists:
-        raise ValidationError("This mail id is aldready registered.")
+        raise ValidationError("This mail id is already registered.")
     else:
         return value
 
@@ -18,7 +18,7 @@ def redundantmailforpaid(value):
         return value
     qs_exists = paid_userinfo.objects.filter(email=value).exists()
     if qs_exists:
-        raise ValidationError("This mail id is aldready registered.")
+        raise ValidationError("This mail id is already registered.")
     else:
         return value
 
@@ -39,7 +39,7 @@ def number(value):
 def redundantnum(value):
     qs_exists = userinfo.objects.filter(phone=value).exists()
     if qs_exists:
-        raise ValidationError("This phone number aldready exists.")
+        raise ValidationError("This phone number already exists.")
     else:
         return value
 
@@ -47,6 +47,6 @@ def redundantnum(value):
 def redundantnumforpaid(value):
 	qs_exists=paid_userinfo.objects.filter(phone=value).exists()
 	if qs_exists:
-		raise ValidationError("This phone number aldready exists.")
+		raise ValidationError("This phone number already exists.")
 	else:
 		return value

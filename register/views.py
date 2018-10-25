@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from register.forms import RegistrationForm, PaidRegistrationForm, StudentForm
+from register.forms import RegistrationForm, PaidRegistrationForm, StudentForm, OfflineRegistrationForm
 import string
 from django.http import JsonResponse
 from register.models import userinfo, winners, paid_userinfo, paid_winners
@@ -92,7 +92,7 @@ class PaidReg(TemplateView):
 
 class OfflineReg(TemplateView):
 	def get(self,request,*args,**kwargs):
-		form=RegistrationForm()
+		form=OfflineRegistrationForm()
 		context={
 		"title":"testing",
 		"form":form
@@ -100,7 +100,7 @@ class OfflineReg(TemplateView):
 		return render(request,"offlinereg.html",context)
 
 	def post(self,request,*args,**kwargs):
-		form=RegistrationForm(request.POST)
+		form=OfflineRegistrationForm(request.POST)
 		context={
 		"title":"testing",
 		"form":form
@@ -110,7 +110,7 @@ class OfflineReg(TemplateView):
 			mail=form.cleaned_data.get('email')
 			name=form.cleaned_data.get('name')
 			phone=form.cleaned_data.get('phone')
-			college=form.cleaned_data.get('college')
+			college="Model engineering College"
 			stay=form.cleaned_data.get('stay')
 			code=uniqueid('6')
 			u=userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,stay=stay,present=True)

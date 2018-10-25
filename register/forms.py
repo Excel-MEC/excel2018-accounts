@@ -485,3 +485,34 @@ class StudentForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(StudentForm, self).clean()
+
+class OfflineRegistrationForm(forms.Form):
+
+    TRUE_FALSE_CHOICES = (
+        ('', "Stay"),
+        (1, "Yes"),
+        (0, "No"),)
+
+    name=forms.CharField(max_length=50,required=True,label='',widget=forms.TextInput(attrs={
+        "placeholder":"Full Name",
+        "class":"form-control",
+        "style":"height:50px;margin-bottom:10px;"
+    }))
+    email=forms.EmailField(required=False,label='',validators=[redundantmail,],widget=forms.TextInput(attrs={
+        "placeholder":"Email Address",
+        "class":"form-control",
+        "style":"height:50px;margin-bottom:10px;"
+    }))
+    phone=forms.CharField(max_length=10,min_length=10,label='',validators=[number,redundantnum],widget=forms.TextInput(attrs={
+        "placeholder":"Phone Number",
+        "class":"form-control",
+        "style":"height:50px;margin-bottom:10px;"
+    }))
+    stay=forms.TypedChoiceField(coerce=lambda x: bool(int(x)),choices = TRUE_FALSE_CHOICES,label='',widget=forms.Select(attrs={
+        "placeholder":"Stay Required",
+        "class":"form-control",
+        "style":"height:50px;margin-bottom:20px;"
+    }))
+    def clean(self):
+        super(OfflineRegistrationForm,self).clean()
+ 
