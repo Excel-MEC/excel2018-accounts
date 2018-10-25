@@ -7,6 +7,7 @@ from register.models import userinfo, winners, paid_userinfo, paid_winners
 import pyqrcode
 from django.http import HttpResponseRedirect
 import random
+from itertools import chain
 
 
 def genexid(size=4, nums=string.digits):
@@ -260,8 +261,6 @@ class SearchByView(TemplateView):
 			'dataset':d
 			}
 			return JsonResponse(data)
-
-
 
 		if((searchby=="" or searchby==None) and (value=="Not Applicable" or value=="")):
 			error1=True
