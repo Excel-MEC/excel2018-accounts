@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from controlroom.models import venue, event
+from controlroom.models import event
 from register.models import userinfo, paid_userinfo
 from django.http import JsonResponse
 import datetime
 from django.shortcuts import get_object_or_404
 from register.models import winners, userinfo, paid_winners
-from .forms import eventform, venueform
+from .forms import eventform
 from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.generics import RetrieveAPIView
 from .serializers import api, winnerapi
@@ -168,9 +168,7 @@ class ControlRoomView(TemplateView):
 
         if request.POST.get('ajax'):
             ajax=request.POST.get('ajax')
-            if(ajax=="venue"):
-                list1=venue.objects.values_list('venue_id',flat=True)
-            elif(ajax=="eventname"):
+            if(ajax=="eventname"):
                 list1=event.objects.values_list('event_name',flat=True)
             elif(ajax=="excelid"):
                 list1=[]
@@ -187,21 +185,6 @@ class ControlRoomView(TemplateView):
             list=request.POST.get('update')
             list1=list.split(',')
             obj = event.objects.get(event_id=list1[0])
-            if int(list1[1])==0:
-                obj.status=1
-                venueobj = venue.objects.get(venue_id=obj.venue_id)
-                print(venueobj.occupied)
-                venueobj.occupied = True
-                venueobj.current_event = obj.event_name
-                venueobj.save()
-
-
-            elif(int(list1[1])==1):
-                obj.status=2
-                venueobj = venue.objects.get(venue_id=obj.venue_id)
-                venueobj.occupied = False
-                venueobj.current_event = "nil"
-                venueobj.save()
 
             obj.save()
 
@@ -213,11 +196,6 @@ class ControlRoomView(TemplateView):
 
         if((searchby=="" or searchby==None) and (value=="Not Applicable" or value=="")):
             error1=True
-        if((searchby=="venue" or searchby=="eventname" or searchby=="excelid") and value==""):
-            error2=True
-        if(searchby=="venue"):
-            result=venue.objects.filter(venue_id=value)
-            sb=0
         elif(searchby=="eventname"):
             value="_".join(value.split(" "))
             result=event.objects.filter(event_name__icontains=value)
@@ -245,8 +223,6 @@ class EventView(TemplateView):
     def get(self,request,*args,**kwargs):
         list1=get_object_or_404(event,event_id=kwargs['event'])
         list2=list1.short_list.split(",")
-        list3=list1.em.split(",")
-        list4=list1.em_num.split(",")
         list5=list1.participants.split(",")
         context={
             "title":"testing",
@@ -254,22 +230,9 @@ class EventView(TemplateView):
             "id":list1.event_id,
             "evname":list1.event_name,
             "shortlist":list2,
-            "eventman":zip(list3,list4),
-            "eventman_num":list4,
             "participants":list5
         }
         return render(request,"eventview.html",context)
-def Intermediate(request):
-    queryset1=event.objects.filter(day='2018-10-05')
-    queryset2=event.objects.filter(day='2018-10-06')
-    queryset3=event.objects.filter(day='2018-10-07')
-    context={
-        "day1":queryset1,
-        "day2":queryset2,
-        "day3":queryset3
-    }
-    return render(request,"intermediate.html",context)
-
 
 class Android(ListAPIView):
     serializer_class = api
@@ -296,18 +259,6 @@ class Winnerapi(ListAPIView):
         else:
             winn = paid_winners.objects.filter(event__iexact=event_name)
             return winn
-
-
-class VenueDetail(TemplateView):
-    def get(self,request,*args,**kwargs):
-        venuedet=get_object_or_404(venue,venue_id=self.kwargs['venue'])
-
-        events=event.objects.filter(venue_id=self.kwargs['venue'])
-        context={
-            "venue":venuedet,
-            "events":events
-        }
-        return render(request,"venuedet.html",context)
 
 class Download(TemplateView):
     def get(self,request,*args,**kwargs):
@@ -337,34 +288,6 @@ class Download(TemplateView):
             response['content_type'] = 'application/pdf'
             response['Content-Disposition'] = 'attachment;filename=%s'%fname
             return response
-
-class VenueUpdate(TemplateView):
-    def get(self,request,*args,**kwargs):
-        venue1=self.kwargs['ven']
-        instance = venue.objects.get(venue_id=venue1)
-        form = Venueform(request.POST or None, instance=instance)
-        context = {
-            "form": form,
-        }
-        return render(request, "venupdate.html", context)
-
-    def post(self,request,*args,**kwargs):
-        venue1=self.kwargs['ven']
-        instance = venue.objects.get(venue_id=venue1)
-        form=venueform(request.POST or None,instance=instance)
-        link="/venuepage/"
-        link=link+venue1+"/"
-        context={
-            "title":"testing",
-            "form":form
-        }
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
-            return HttpResponseRedirect(link)
-
-        return render(request, "venupdate.html", context)
-
 
 class EventNav(TemplateView):
     def get(self,request,*args,**kwargs):

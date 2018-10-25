@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from register.views import RegView, PaidReg, OfflineReg, SchoolReg, Certi, SearchByView
-from controlroom.views import PostCreate, Android, VenueDetail, Download, VenueUpdate, Winnerapi, EventNav, Intermediate, WinnerDownload, EventView, ControlRoomView
+from controlroom.views import PostCreate, Android, Download, Winnerapi, EventNav, WinnerDownload, EventView, ControlRoomView
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
@@ -27,16 +27,11 @@ urlpatterns = [
 	path('controlroom/', ControlRoomView.as_view(), name='controlroom'),
 	path('eventpage/<slug:event>/',
 		 EventView.as_view(), name='eventview'),
-	path('eventpage/', Intermediate, name='eventview'),
 	path('eventnav/', EventNav.as_view(), name='eventnav'),
-	path('venuepage/<slug:venue>/',
-		 VenueDetail.as_view(), name='venueview'),
 	path('certificate/', Certi, name='certificate'),
 	path('searchby/', SearchByView.as_view(), name='searchby'),
 	path('eventpage/<slug:pk>/create/',
 		 PostCreate, name='controolroom'),
-	path('venuepage/<slug:ven>/create/',
-		 VenueUpdate.as_view(), name='venupdate'),
 	path('eventpage/<slug:eve>/download/',
 		 Download.as_view(), name='down'),
 	path('eventpage/<slug:eve>/winnerdownload/',
