@@ -263,9 +263,12 @@ class Winnerapi(ListAPIView):
 class Download(TemplateView):
     def get(self,request,*args,**kwargs):
         event1=self.kwargs['eve']
+        print(event1)
         obj = event.objects.get(event_id=event1)
+        print(type(obj))
         if obj.short_list!="nil":
             shortlisted = obj.short_list.split(',')
+            print(shortlisted)
             if not obj.paid:
                 short = []
                 for eid in shortlisted:
