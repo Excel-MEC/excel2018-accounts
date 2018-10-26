@@ -231,7 +231,6 @@ class RegistrationForm(forms.Form):
     }))
     def clean(self):
         super(RegistrationForm,self).clean()
-        # print(cleaned_data)
 
 class PaidRegistrationForm(forms.Form):
 
