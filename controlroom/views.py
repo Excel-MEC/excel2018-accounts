@@ -146,7 +146,7 @@ def PostCreate(request, pk=None):
 class ControlRoomView(TemplateView):
     def get(self,request,*args,**kwargs):
         today = datetime.datetime.today()
-        result=event.objects.filter(day__day=today.day,status__in=[0,1]).order_by('time')
+        result=event.objects.filter(status__in=[0,1])
         sb=1
         context={
             "title":"testing",
