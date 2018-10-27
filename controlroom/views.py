@@ -258,7 +258,7 @@ class Winnerapi(ListAPIView):
             winn = winners.objects.filter(event__iexact=event_name)
         else:
             winn = paid_winners.objects.filter(event__iexact=event_name)
-            return winn
+        return winn
 
 class Download(TemplateView):
     def get(self,request,*args,**kwargs):
