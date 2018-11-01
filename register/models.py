@@ -53,6 +53,8 @@ class paid_userinfo(models.Model):
     stay=models.BooleanField(default=False)
     printed=models.BooleanField(default=False)
     event=models.CharField(max_length=100,null=True)
+    referralCode=models.CharField(max_length=100,blank=True,null=True)
+    referralName=models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return str(self.name)

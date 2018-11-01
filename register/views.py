@@ -81,8 +81,10 @@ class PaidReg(TemplateView):
             college=form.cleaned_data.get('college')
             stay=form.cleaned_data.get('stay')
             event=form.cleaned_data.get('event')
+            referralName=form.cleaned_data.get('referralName')
+            referralCode=form.cleaned_data.get('referralCode')
             code=uniqueid('7')
-            u=paid_userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,event=event,stay=stay,present=True)
+            u=paid_userinfo(excelid=code,name=name,college=college,email=mail,phone=phone,event=event,stay=stay,referralName=referralName,referralCode=referralCode)
             u.save()
             #flag for offlinereg or paidreg
             flag=0

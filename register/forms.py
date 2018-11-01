@@ -461,6 +461,16 @@ class PaidRegistrationForm(forms.Form):
         "class":"form-control",
         "style":"height:50px;margin-bottom:10px;"
     }))
+    referralName = forms.CharField(label='', widget=forms.TextInput(attrs={
+        "placeholder": "Referral Name",
+        "class": "form-control",
+        "style":"height:50px; margin-bottom:10px;"
+    }))
+    referralCode = forms.CharField(label='', widget=forms.TextInput(attrs={
+        "placeholder": "Referral Code",
+        "class": "form-control",
+        "style":"height:50px; margin-bottom:10px;"
+    }))
     event=forms.ChoiceField(choices = EVENT,label='',widget=forms.Select(attrs={
         "placeholder":"Event Name",
         "class":"form-control",
